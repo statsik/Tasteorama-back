@@ -4,14 +4,20 @@ import {
   getRecipeByIdController,
 } from '../controllers/recipes.js';
 import { ctrlWrapper } from '../utils/ctrlWrapper.js';
-import { createRecipes } from '../services/recepies.js';
+import { createRecipeController, deleteRecipeController, editRecipeController, patchRecipeController } from '../controllers/recipes.js';
+import { upload } from '../middlewares/multer.js';
+import { validateBody } from '../middlewares/validateBody.js';
+import { createRecipeSchema, updateRecipeSchema } from '../validation/recipe.js';
+import { isValidId } from '../middlewares/isValidId.js';
 
 const routerRecipes = Router();
 
-routerRecipes.get('/recipes', ctrlWrapper(getRecipesController));
+routerRecipes.get('/', ctrlWrapper(getRecipesController));
 
-routerRecipes.get('/recipes/:recipeId', ctrlWrapper(getRecipeByIdController));
+routerRecipes.get('/:recipeId', isValidId, ctrlWrapper(getRecipeByIdController));
 
-routerRecipes.post('/recipes', ctrlWrapper(createRecipes));
-
+routerRecipes.post('/', upload.single('photo'), validateBody(createRecipeSchema), ctrlWrapper(createRecipeController)),
+routerRecipes.put('/:recipeId', upload.single('photo'), isValidId, ctrlWrapper(editRecipeController));
+routerRecipes.patch('/:recipeId', upload.single('photo'), validateBody(updateRecipeSchema), isValidId, ctrlWrapper(patchRecipeController));
+routerRecipes.delete('/:recipeId', isValidId, ctrlWrapper(deleteRecipeController));
 export default routerRecipes;

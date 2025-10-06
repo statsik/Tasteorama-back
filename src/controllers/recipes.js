@@ -1,6 +1,9 @@
 import { createRecipes, deleteRecipe, editRecipe } from '../services/recepies.js';
 import { getAllRecipes, getRecipeById } from '../services/recipes.js';
 import createHttpError from 'http-errors';
+import { getEnvVar } from '../utils/getEnvVar.js';
+import { saveFileToCloudinary } from '../utils/saveFileToCloudinary.js';
+import { saveFileToUploadDir } from '../utils/saveFileToUploadDir.js';
 
 export const createRecipeController = async (req, res) => {
   const recipe = await createRecipes(req.body);
@@ -53,6 +56,44 @@ export const editRecipeController = async (req, res, next) => {
         status: 200,
         message: "Successfully edited a recipe!",
         data: recipe,
+    });
+};
+
+export const patchRecipeController = async (req, res, next) => {
+    const { recipeId } = req.params;
+    const { _id: userId } = req.user;
+    const photo = req.file;
+    let photoUrl;
+
+    if (photo) {
+        if (getEnvVar('ENABLE_CLOUDINARY') === 'true') {
+            photoUrl = await saveFileToCloudinary(photo);
+        } else {
+            photoUrl = await saveFileToUploadDir(photo);
+        }
+    }
+
+    const updatedData = {
+        ...req.body,
+    };
+
+    if (photoUrl) {
+        updatedData.photo = photoUrl;
+    }
+
+    const recipe = await editRecipe(
+        recipeId, userId, updatedData
+    );
+
+    if (!recipe) {
+        next(createHttpError(404, 'Recipe not found'));
+        return;
+    }
+
+    res.json({
+        status: 200,
+        message: `Successfully patched a recipe!`,
+        data: recipe
     });
 };
 
