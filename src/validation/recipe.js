@@ -1,5 +1,4 @@
 import Joi from 'joi';
-import { ingredientSchema } from '../db/models/recepies';
 
 export const createRecipeSchema = Joi.object({
   name: Joi.string()
@@ -102,7 +101,7 @@ export const updateRecipeSchema = Joi.object({
 
   calories: Joi.number().integer().min(0).optional(),
 
-  ingredients: Joi.array(ingredientSchema)
+  ingredients: Joi.array()
     .items()
     .min(1)
     .optional(),

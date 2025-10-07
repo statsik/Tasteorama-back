@@ -1,22 +1,31 @@
-import { createRecipes, deleteRecipe, editRecipe } from '../services/recepies.js';
-import { getAllRecipes, getRecipeById } from '../services/recipes.js';
+import { createRecipes, deleteRecipe, editRecipe } from '../services/recipes.js';
+import { getAllRecipes, getRecipesById } from '../services/recipes.js';
 import createHttpError from 'http-errors';
 import { getEnvVar } from '../utils/getEnvVar.js';
 import { saveFileToCloudinary } from '../utils/saveFileToCloudinary.js';
 import { saveFileToUploadDir } from '../utils/saveFileToUploadDir.js';
+import { parsePaginationParams } from '../utils/parsePaginationParams.js';
+import { parseSortParams } from '../utils/parseSortParams.js';
 
 export const createRecipeController = async (req, res) => {
   const recipe = await createRecipes(req.body);
 
   res.status(201).json({
     status: 201,
-    message: `Successfully created a student!`,
+    message: `Successfully created a recipe!`,
     data: recipe,
   });
 };
 
 export const getRecipesController = async (req, res) => {
-  const recipes = await getAllRecipes();
+  const { page, perPage } = parsePaginationParams(req.query);
+  const { sortBy, sortOrder } = parseSortParams(req.query);
+  const recipes = await getAllRecipes({
+    page,
+    perPage,
+    sortBy,
+    sortOrder,
+  });
 
   res.json({
     status: 200,
@@ -27,7 +36,7 @@ export const getRecipesController = async (req, res) => {
 
 export const getRecipeByIdController = async (req, res, next) => {
   const { recipeId } = req.params;
-  const recipe = await getRecipeById(recipeId);
+  const recipe = await getRecipesById(recipeId);
 
   if (!recipe) {
     throw createHttpError('Recipe not found');

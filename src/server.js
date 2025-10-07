@@ -3,7 +3,7 @@ import pino from 'pino-http';
 import cors from 'cors';
 import dotenv from "dotenv";
 import { getEnvVar } from './utils/getEnvVar.js';
-import { getAllRecipes, getRecipesById } from './services/recepies.js';
+import { getAllRecipes, getRecipesById } from './services/recipes.js';
 import routerRecipes from './routers/recipes.js';
 import { errorHandler } from './middlewares/errorHandler.js';
 import { notFoundHandler } from './middlewares/notFoundHandler.js';
@@ -58,7 +58,7 @@ export const startServer = () => {
 
   app.use(routerRecipes);
 
-  app.use('*', notFoundHandler);
+  app.use(notFoundHandler);
 
   app.use(errorHandler);
 
