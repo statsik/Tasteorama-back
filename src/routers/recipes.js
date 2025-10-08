@@ -9,10 +9,16 @@ import { upload } from '../middlewares/multer.js';
 import { validateBody } from '../middlewares/validateBody.js';
 import { createRecipeSchema, updateRecipeSchema } from '../validation/recipe.js';
 import { isValidId } from '../middlewares/isValidId.js';
+import { authenticate } from '../middlewares/authenticate.js';
+import { checkRoles } from '../middlewares/checkRoles.js';
+import { ROLES } from '../constants/index.js';
 
 const routerRecipes = Router();
 
-routerRecipes.get('/', ctrlWrapper(getRecipesController));
+routerRecipes.use(authenticate);
+
+routerRecipes.get('/', checkRoles(ROLES.TEACHER), ctrlWrapper(getRecipesController));
+
 
 routerRecipes.get('/:recipeId', isValidId, ctrlWrapper(getRecipeByIdController));
 

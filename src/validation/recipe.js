@@ -1,4 +1,5 @@
 import Joi from 'joi';
+import { isValidObjectId } from 'mongoose';
 
 export const createRecipeSchema = Joi.object({
   name: Joi.string()
@@ -86,6 +87,12 @@ export const createRecipeSchema = Joi.object({
         'any.required': 'Image URL is required.',
         'string.uri': 'Image URL must be a valid URL format.',
     }),
+  parentId: Joi.string().custom((value, helper) => {
+		    if (value && !isValidObjectId(value)) {
+		      return helper.message('Parent id should be a valid mongo id');
+		    }
+		    return true;
+		 }),
 });
 
 export const updateRecipeSchema = Joi.object({

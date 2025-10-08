@@ -60,6 +60,10 @@ const recipeSchema = new Schema(
       type: String,
       required: true,
     },
+    parentId: {
+      type: Schema.Types.ObjectId,
+      ref: 'users'
+    },
   },
   {
     timestamps: true,
