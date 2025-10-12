@@ -1,0 +1,54 @@
+type: object
+required:
+  - _id
+  - name
+  - description
+  - prepTimeMinutes
+  - category
+  - amount
+  - calories
+  - ingredients
+  - instructionSteps
+  - imageUrl
+properties:
+  _id:
+    description: "Contact's id"
+    type: string
+    example: 65e4decdd286b30065d54af9
+  name:
+    description: "Recipe's name"
+    type: string
+    example: 'Salad'
+  description:
+    description: "Recipe's description"
+    type: string
+    example: 'description about recipe'
+  prepTimeMinutes:
+    description: "Recipe's age"
+    type: string
+    example: 10
+  category:
+    description: "recipes's category"
+    type: string
+    example: 'breakfast'
+  amount:
+    description: 'Amount of ingredient'
+    type: string
+    example: 100
+  calories:
+    description: 'Calories'
+    type: string
+    example: 10
+  ingredients:
+    description: 'Ingredient of dish'
+    type: string
+    example: 'meat'
+  instructionSteps:
+    description: 'Instruction to prepare'
+    type: string
+    example: 'Crack the eggs into a small bowl. Add a pinch of salt and a bit of black pepper. Whisk the eggs with a fork or whisk until smooth and slightly foamy'
+  imageUrl:
+    description: "Link to recipe's photo"
+    type: string
+    example: https://res.cloudinary.com/uqwgdu/image/upload/image.png
+

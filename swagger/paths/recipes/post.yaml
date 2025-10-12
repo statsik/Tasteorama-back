@@ -1,0 +1,49 @@
+tags:
+  - Recipe
+summary: Create recipe
+operationId: createRecipe
+description: 'Create a recipe with payload'
+security:
+  - bearerAuth: []
+requestBody:
+  content:
+    multipart/form-data:
+      schema:
+        type: object
+        required:
+        - name
+        - description
+        - prepTimeMinutes
+        - calories
+        - ingredients
+        - instructionSteps
+        - imageUrl
+        properties:
+          name:
+            description: "Recipe's name"
+            type: string
+            example: 'Salad'
+          description:
+            description: "Recipe's description"
+            type: string
+            example: 'description about recipe'
+          prepTimeMinutes:
+            description: "Recipe's age"
+            type: string
+            example: 10
+          calories:
+            description: 'Calories'
+            type: string
+            example: 10
+          ingredients:
+            description: 'Ingredient of dish'
+            type: string
+            example: 'meat'
+          instructionSteps:
+            description: 'Instruction to prepare'
+            type: string
+            example: 'Crack the eggs into a small bowl. Add a pinch of salt and a bit of black pepper. Whisk the eggs with a fork or whisk until smooth and slightly foamy'
+          imageUrl:
+            description: "Recipe's photo"
+            type: string
+            format: binary
